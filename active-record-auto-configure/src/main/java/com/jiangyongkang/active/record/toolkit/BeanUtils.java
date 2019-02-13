@@ -21,23 +21,23 @@ public class BeanUtils {
 
     /**
      * 将包含了属性方法的 Map 对象转换成 JavaBean
-     *
      * @param attributes 属性 Map 集合
      * @param clazz      JavaBean 类型信息
      * @param <T>        JavaBean 泛型
      * @return JavaBean
      */
     public static <T> T mapToBean(Map<String, Object> attributes, Class<T> clazz) {
+        if (attributes == null) return null;
         try {
             T bean = clazz.newInstance();
             for (String key : attributes.keySet()) {
                 Object value = attributes.get(key);
-                String methodName = SET_PREFIX + StringUtils.captureName(key);
+                String methodName = SET_PREFIX + StringUtils.captureName(key.toLowerCase());
                 Method method = clazz.getMethod(methodName, value.getClass());
                 method.invoke(bean, value);
             }
             return bean;
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
         return null;
@@ -45,7 +45,6 @@ public class BeanUtils {
 
     /**
      * 将 JavaBean 转换成 Map 对象
-     *
      * @param bean JavaBean
      * @param <T>  JavaBean 泛型
      * @return 包含 JavaBean 属性的 Map 集合

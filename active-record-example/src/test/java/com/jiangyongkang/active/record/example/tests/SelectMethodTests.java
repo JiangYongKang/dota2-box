@@ -41,7 +41,7 @@ public class SelectMethodTests extends ActiveRecordExampleApplicationTests {
 
     @Test
     public void selectFindBySQLTest() {
-        User user = User.record.findBySQL("name = '1'");
+        User user = User.record.findBySQL("name = 'vincent'");
         Assert.assertNotNull(user);
     }
 

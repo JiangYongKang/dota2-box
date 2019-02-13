@@ -1,5 +1,8 @@
 package com.jiangyongkang.active.record.toolkit;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * author: vincent
  * date: 2019-02-13 11:52
@@ -9,9 +12,11 @@ package com.jiangyongkang.active.record.toolkit;
 public class StringUtils {
 
     public static String captureName(String name) {
-        char[] chars = name.toCharArray();
-        chars[0] -= 32;
-        return String.valueOf(chars);
+        return Stream.of(name.split("_")).map(subName -> {
+            char[] chars = subName.toCharArray();
+            chars[0] -= 32;
+            return String.valueOf(chars);
+        }).collect(Collectors.joining());
     }
 
     public static boolean isEmpty(String s) {

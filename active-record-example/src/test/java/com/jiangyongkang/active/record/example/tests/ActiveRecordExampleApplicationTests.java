@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ import javax.sql.DataSource;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Sql(scripts = {"classpath:db/schema.sql", "classpath:db/data.sql"})
 public class ActiveRecordExampleApplicationTests {
 
     @Resource
