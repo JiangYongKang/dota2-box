@@ -21,12 +21,4 @@ public interface Update<E extends ActiveRecord> {
      */
     boolean update(Map<String, Object> attributeMap);
 
-    /**
-     * 更新全部属性
-     *
-     * @param attributeMap 属性集合
-     * @return 更新结果
-     */
-    boolean updateAll(Map<String, Object> attributeMap);
-
 }

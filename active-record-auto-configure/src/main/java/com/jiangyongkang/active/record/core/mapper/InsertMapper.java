@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.InsertProvider;
 public interface InsertMapper {
 
     @InsertProvider(type = DynamicInsertProvider.class, method = "save")
-    int save(ActiveRecord entity, Class<?> clazz);
+    boolean save(ActiveRecord entity, Class<?> clazz);
 
 }

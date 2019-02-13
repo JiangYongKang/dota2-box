@@ -1,28 +1,25 @@
 package com.jiangyongkang.active.record.core.provider;
 
+import org.apache.ibatis.jdbc.SQL;
+
 import java.util.Map;
 
 public class DynamicUpdateProvider extends DynamicSupportProvider {
 
-    public String updateByAttrMap(Map<String, Object> attributeMap, Class<?> clazz) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("update ");
-        builder.append(super.tableName(clazz));
-        builder.append(" set ");
-        Object id = attributeMap.get("id");
-        attributeMap.remove("id");
-        attributeMap.keySet().forEach(key -> {
-            builder.append(key);
-            builder.append(" = ");
-            builder.append(attributeMap.get(key));
-            builder.append(", ");
-        });
-        builder.delete(builder.length() - 2, builder.length());
-        if (id != null) {
-            builder.append(" where id = ");
-            builder.append(id);
-        }
-        return builder.toString();
+    public String update(Map<String, Object> attributes, Class<?> clazz) {
+        Object id = attributes.remove("id");
+        return new SQL() {
+            {
+                UPDATE(tableName(clazz));
+                attributes.forEach((attributeName, attributeValue) -> {
+                    if (attributeValue instanceof String)
+                        attributeValue = "'" + attributeValue + "'";
+                    SET(attributeName + " = " + attributeValue);
+                });
+                if (id != null)
+                    WHERE("id = " + id);
+            }
+        }.toString();
     }
 
 }

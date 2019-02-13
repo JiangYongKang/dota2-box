@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface UpdateMapper {
 
-    @UpdateProvider(type = DynamicUpdateProvider.class, method = "updateByAttrMap")
-    boolean update(Map<String, Object> attributeMap, Class<?> clazz);
+    @UpdateProvider(type = DynamicUpdateProvider.class, method = "update")
+    boolean update(Map<String, Object> attributes, Class<?> clazz);
 
 }

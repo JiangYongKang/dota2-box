@@ -56,7 +56,7 @@ public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
 
     @Override
     public int count() {
-        return this.countBySQL(null);
+        return selectMapper.count(clazz);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
 
     @Override
     public boolean save() {
-        return insertMapper.save(this, clazz) == 1;
+        return insertMapper.save(this, clazz);
     }
 
     @Override
@@ -96,12 +96,7 @@ public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
     }
 
     @Override
-    public boolean update(Map<String, Object> attributeMap) {
-        return updateMapper.update(attributeMap, clazz);
-    }
-
-    @Override
-    public boolean updateAll(Map<String, Object> attributeMap) {
-        return update(attributeMap);
+    public boolean update(Map<String, Object> attributes) {
+        return updateMapper.update(attributes, clazz);
     }
 }

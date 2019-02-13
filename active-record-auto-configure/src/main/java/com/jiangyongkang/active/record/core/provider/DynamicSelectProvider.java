@@ -38,6 +38,14 @@ public class DynamicSelectProvider extends DynamicSupportProvider {
         }.toString();
     }
 
+    public String count(Class<?> clazz) {
+        return new SQL() {
+            {
+                SELECT("count(*)").FROM(tableName(clazz));
+            }
+        }.toString();
+    }
+
     public String countBySQL(String condition, Class<?> clazz) {
         return new SQL() {
             {

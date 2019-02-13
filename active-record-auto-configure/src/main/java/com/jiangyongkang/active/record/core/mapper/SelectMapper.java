@@ -21,10 +21,11 @@ public interface SelectMapper {
     @SelectProvider(type = DynamicSelectProvider.class, method = "findBySQL")
     Map<String, Object> findBySQL(String condition, Class<?> clazz);
 
+    @SelectProvider(type = DynamicSelectProvider.class, method = "count")
+    int count(Class<?> clazz);
+
     @SelectProvider(type = DynamicSelectProvider.class, method = "countBySQL")
     int countBySQL(String condition, Class<?> clazz);
-
-    List<Map<String, Object>> all(Class<?> clazz);
 
     @SelectProvider(type = DynamicSelectProvider.class, method = "where")
     List<Map<String, Object>> where(String condition, Class<?> clazz);
