@@ -1,0 +1,17 @@
+{
+  "properties": [
+    {
+      "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
+      "name": "active-record.banner",
+      "description": "是否开启 Banner 图.",
+      "type": "java.lang.Boolean",
+      "defaultValue": true
+    },
+    {
+      "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
+      "name": "active-record.table-name-prefix",
+      "description": "统一的表名前缀.",
+      "type": "java.lang.String"
+    }
+  ]
+}
