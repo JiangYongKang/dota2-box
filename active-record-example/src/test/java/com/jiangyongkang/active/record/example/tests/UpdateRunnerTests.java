@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Rollback
 @Transactional
-public class UpdateMethodTests extends ActiveRecordExampleApplicationTests {
+public class UpdateRunnerTests extends ActiveRecordExampleApplicationTests {
 
     @Test
     public void updateTest() {

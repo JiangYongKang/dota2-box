@@ -1,10 +1,11 @@
-package com.jiangyongkang.active.record;
+package com.jiangyongkang.active.record.core;
 
 import com.jiangyongkang.active.record.toolkit.BeanUtils;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("unchecked")
 public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
@@ -65,7 +66,7 @@ public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
     }
 
     @Override
-    public boolean exists() {
+    public boolean any() {
         return false;
     }
 
@@ -91,6 +92,11 @@ public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
     }
 
     @Override
+    public boolean createWith(Map<String, Object> attributes) {
+        return false;
+    }
+
+    @Override
     public boolean update() {
         return update(BeanUtils.beanToMap(this));
     }
@@ -98,5 +104,30 @@ public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
     @Override
     public boolean update(Map<String, Object> attributes) {
         return updateMapper.update(attributes, clazz);
+    }
+
+    @Override
+    public String tableName() {
+        return null;
+    }
+
+    @Override
+    public boolean exists() {
+        return false;
+    }
+
+    @Override
+    public boolean tableExists() {
+        return false;
+    }
+
+    @Override
+    public Set<String> columns() {
+        return null;
+    }
+
+    @Override
+    public E findOrCreateBy() {
+        return null;
     }
 }

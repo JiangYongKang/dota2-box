@@ -17,9 +17,48 @@ public class ActiveRecordProperties {
     private boolean banner = true;
 
     /**
-     * 统一的表名前缀
+     * 全局表名前缀
      */
     private String tableNamePrefix;
+
+    /**
+     * 全局表名后缀
+     */
+    private String tableNameSuffix;
+
+    /**
+     * 全局主键名前缀
+     */
+    private String primaryKeyPrefix;
+
+    /**
+     * 全局主键名后缀
+     */
+    private String primaryKeySuffix;
+
+    public String getTableNameSuffix() {
+        return tableNameSuffix;
+    }
+
+    public void setTableNameSuffix(String tableNameSuffix) {
+        this.tableNameSuffix = tableNameSuffix;
+    }
+
+    public String getPrimaryKeyPrefix() {
+        return primaryKeyPrefix;
+    }
+
+    public void setPrimaryKeyPrefix(String primaryKeyPrefix) {
+        this.primaryKeyPrefix = primaryKeyPrefix;
+    }
+
+    public String getPrimaryKeySuffix() {
+        return primaryKeySuffix;
+    }
+
+    public void setPrimaryKeySuffix(String primaryKeySuffix) {
+        this.primaryKeySuffix = primaryKeySuffix;
+    }
 
     public boolean isBanner() {
         return banner;
@@ -42,6 +81,9 @@ public class ActiveRecordProperties {
         return "ActiveRecordProperties{" +
                 "banner=" + banner +
                 ", tableNamePrefix='" + tableNamePrefix + '\'' +
+                ", tableNameSuffix='" + tableNameSuffix + '\'' +
+                ", primaryKeyPrefix='" + primaryKeyPrefix + '\'' +
+                ", primaryKeySuffix='" + primaryKeySuffix + '\'' +
                 '}';
     }
 }

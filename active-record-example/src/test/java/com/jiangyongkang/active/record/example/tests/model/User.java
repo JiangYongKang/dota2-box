@@ -1,6 +1,6 @@
 package com.jiangyongkang.active.record.example.tests.model;
 
-import com.jiangyongkang.active.record.ActiveRecord;
+import com.jiangyongkang.active.record.core.ActiveRecord;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Rollback
 @Transactional
-public class InsertMethodTests extends ActiveRecordExampleApplicationTests {
+public class InsertRunnerTests extends ActiveRecordExampleApplicationTests {
 
     @Test
     public void saveTest() {

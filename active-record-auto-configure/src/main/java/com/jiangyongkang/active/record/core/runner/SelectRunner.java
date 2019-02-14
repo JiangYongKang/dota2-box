@@ -1,11 +1,11 @@
-package com.jiangyongkang.active.record.core;
+package com.jiangyongkang.active.record.core.runner;
 
-import com.jiangyongkang.active.record.ActiveRecord;
+import com.jiangyongkang.active.record.core.ActiveRecord;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface Select<E extends ActiveRecord> {
+public interface SelectRunner<E extends ActiveRecord> {
 
     /**
      * 按主键排序查询第一个元素
@@ -67,11 +67,6 @@ public interface Select<E extends ActiveRecord> {
      */
     int countBySQL(String condition);
 
-    /**
-     * 判断当前对象在数据库中是否存在
-     *
-     * @return 判断结果
-     */
-    boolean exists();
+    boolean any();
 
 }

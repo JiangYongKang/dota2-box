@@ -1,6 +1,6 @@
 package com.jiangyongkang.active.record.core.mapper;
 
-import com.jiangyongkang.active.record.ActiveRecord;
+import com.jiangyongkang.active.record.core.ActiveRecord;
 import com.jiangyongkang.active.record.core.provider.DynamicInsertProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 

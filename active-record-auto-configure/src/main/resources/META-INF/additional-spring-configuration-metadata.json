@@ -10,7 +10,25 @@
     {
       "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
       "name": "active-record.table-name-prefix",
-      "description": "统一的表名前缀.",
+      "description": "全局表名前缀.",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
+      "name": "active-record.table-name-suffix",
+      "description": "全局表名后缀.",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
+      "name": "active-record.primary-key-prefix",
+      "description": "全局主键名前缀.",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
+      "name": "active-record.primary-key-suffix",
+      "description": "全局主键名后缀.",
       "type": "java.lang.String"
     }
   ]
