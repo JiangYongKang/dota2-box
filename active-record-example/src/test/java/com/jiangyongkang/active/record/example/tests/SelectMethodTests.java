@@ -55,13 +55,13 @@ public class SelectMethodTests extends ActiveRecordExampleApplicationTests {
     @Test
     public void countTest() {
         int count = User.record.count();
-        Assert.assertEquals(count, 10);
+        Assert.assertEquals(count, 3);
     }
 
     @Test
     public void countBySQLTest() {
         int count = User.record.countBySQL("name = 'vincent'");
-        Assert.assertEquals(count, 5);
+        Assert.assertEquals(count, 1);
     }
 
 }

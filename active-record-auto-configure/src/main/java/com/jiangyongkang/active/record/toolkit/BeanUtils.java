@@ -21,6 +21,7 @@ public class BeanUtils {
 
     /**
      * 将包含了属性方法的 Map 对象转换成 JavaBean
+     *
      * @param attributes 属性 Map 集合
      * @param clazz      JavaBean 类型信息
      * @param <T>        JavaBean 泛型
@@ -30,11 +31,10 @@ public class BeanUtils {
         if (attributes == null) return null;
         try {
             T bean = clazz.newInstance();
-            for (String key : attributes.keySet()) {
-                Object value = attributes.get(key);
-                String methodName = SET_PREFIX + StringUtils.captureName(key.toLowerCase());
-                Method method = clazz.getMethod(methodName, value.getClass());
-                method.invoke(bean, value);
+            for (String attributeName : attributes.keySet()) {
+                Object attributeValue = attributes.get(attributeName);
+                Method method = clazz.getMethod(methodName(attributeName), attributeValue.getClass());
+                method.invoke(bean, attributeValue);
             }
             return bean;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -45,6 +45,7 @@ public class BeanUtils {
 
     /**
      * 将 JavaBean 转换成 Map 对象
+     *
      * @param bean JavaBean
      * @param <T>  JavaBean 泛型
      * @return 包含 JavaBean 属性的 Map 集合
@@ -57,10 +58,9 @@ public class BeanUtils {
         Map<String, Object> attributes = new HashMap<>();
         try {
             for (Method method : methods) {
-                String attributeName = method.getName().replace(GET_PREFIX, "").toLowerCase();
                 Object attributeValue = method.invoke(bean);
                 if (attributeValue != null)
-                    attributes.put(attributeName, attributeValue);
+                    attributes.put(attributeName(method.getName()), attributeValue);
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -70,6 +70,30 @@ public class BeanUtils {
 
     public static <T> List<T> mapToBean(List<Map<String, Object>> attributes, Class<T> clazz) {
         return attributes.stream().map(attribute -> mapToBean(attribute, clazz)).collect(Collectors.toList());
+    }
+
+    /**
+     * 数据库驼峰属性转 Set 方法名
+     *
+     * @param attributeName 数据库属性名
+     * @return Set 方法名
+     */
+    private static String methodName(String attributeName) {
+        return SET_PREFIX + Arrays.stream(attributeName.split("_"))
+                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase())
+                .collect(Collectors.joining());
+    }
+
+    /**
+     * Get 方法名转数据库属性
+     *
+     * @param methodName Get 方法名
+     * @return 数据库属性名
+     */
+    private static String attributeName(String methodName) {
+        return methodName.replace(GET_PREFIX, "").replaceAll("[A-Z]", "_$0")
+                .substring(1)
+                .toLowerCase();
     }
 
 }
