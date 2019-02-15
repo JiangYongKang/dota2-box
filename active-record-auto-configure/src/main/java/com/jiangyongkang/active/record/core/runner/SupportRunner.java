@@ -1,7 +1,5 @@
 package com.jiangyongkang.active.record.core.runner;
 
-import com.jiangyongkang.active.record.core.ActiveRecord;
-
 import java.util.Set;
 
 /**
@@ -10,7 +8,7 @@ import java.util.Set;
  * comment:
  */
 
-public interface SupportRunner<E extends ActiveRecord> {
+public interface SupportRunner<E> {
 
     /**
      * 获取当前对象的表名

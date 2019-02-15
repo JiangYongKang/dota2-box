@@ -1,10 +1,8 @@
 package com.jiangyongkang.active.record.core.runner;
 
-import com.jiangyongkang.active.record.core.ActiveRecord;
-
 import java.util.Map;
 
-public interface UpdateRunner<E extends ActiveRecord> {
+public interface UpdateRunner<E> {
 
     /**
      * 更新当前对象

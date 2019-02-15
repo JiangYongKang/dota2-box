@@ -8,7 +8,7 @@ import com.jiangyongkang.active.record.core.runner.*;
 import com.jiangyongkang.active.record.toolkit.SpringContextUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 
-public abstract class ActiveModel<E extends ActiveRecord>
+public abstract class ActiveModel<E>
         implements SelectRunner<E>, InsertRunner<E>, UpdateRunner<E>, DeleteRunner<E>, SupportRunner<E> {
 
     protected SqlSessionTemplate sqlSessionTemplate = SpringContextUtil.findBean(SqlSessionTemplate.class);

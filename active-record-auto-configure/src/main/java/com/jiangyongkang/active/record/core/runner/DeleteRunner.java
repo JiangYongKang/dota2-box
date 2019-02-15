@@ -1,10 +1,8 @@
 package com.jiangyongkang.active.record.core.runner;
 
-import com.jiangyongkang.active.record.core.ActiveRecord;
-
 import java.io.Serializable;
 
-public interface DeleteRunner<E extends ActiveRecord> {
+public interface DeleteRunner<E> {
 
     boolean delete();
 

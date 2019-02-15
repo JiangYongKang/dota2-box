@@ -8,12 +8,12 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("unchecked")
-public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
+public class ActiveRecord<E> extends ActiveModel<E> {
 
-    private Class<?> clazz;
+    private Class<E> clazz;
 
     public ActiveRecord() {
-        this.clazz = this.getClass();
+        this.clazz = (Class<E>) this.getClass();
     }
 
     protected E record() {
@@ -23,25 +23,25 @@ public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
     @Override
     public E first() {
         Map<String, Object> result = selectMapper.first(clazz);
-        return (E) BeanUtils.mapToBean(result, clazz);
+        return BeanUtils.mapToBean(result, clazz);
     }
 
     @Override
     public E last() {
         Map<String, Object> result = selectMapper.last(clazz);
-        return (E) BeanUtils.mapToBean(result, clazz);
+        return BeanUtils.mapToBean(result, clazz);
     }
 
     @Override
     public E findById(Serializable id) {
         Map<String, Object> result = selectMapper.findById(id, clazz);
-        return (E) BeanUtils.mapToBean(result, clazz);
+        return BeanUtils.mapToBean(result, clazz);
     }
 
     @Override
     public E findBySQL(String condition) {
         Map<String, Object> result = selectMapper.findBySQL(condition, clazz);
-        return (E) BeanUtils.mapToBean(result, clazz);
+        return BeanUtils.mapToBean(result, clazz);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ActiveRecord<E extends ActiveRecord> extends ActiveModel<E> {
     @Override
     public List<E> where(String condition) {
         List<Map<String, Object>> results = selectMapper.where(condition, clazz);
-        return (List<E>) BeanUtils.mapToBean(results, clazz);
+        return BeanUtils.mapToBean(results, clazz);
     }
 
     @Override

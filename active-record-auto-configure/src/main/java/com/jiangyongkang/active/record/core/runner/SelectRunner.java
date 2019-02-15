@@ -1,11 +1,9 @@
 package com.jiangyongkang.active.record.core.runner;
 
-import com.jiangyongkang.active.record.core.ActiveRecord;
-
 import java.io.Serializable;
 import java.util.List;
 
-public interface SelectRunner<E extends ActiveRecord> {
+public interface SelectRunner<E> {
 
     /**
      * 按主键排序查询第一个元素
