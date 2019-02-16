@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Rollback
 @Transactional
-public class DeleteRunnerTests extends ActiveRecordApplicationTests {
+public class DeleteRunnerTest extends ActiveRecordApplicationTest {
 
     @Test
     public void deleteTest() {

@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Rollback
 @Transactional
-public class UpdateRunnerTests extends ActiveRecordApplicationTests {
+public class UpdateRunnerTest extends ActiveRecordApplicationTest {
 
     @Test
     public void updateTest() {

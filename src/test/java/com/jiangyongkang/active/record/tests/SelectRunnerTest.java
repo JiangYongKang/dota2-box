@@ -13,7 +13,7 @@ import java.util.List;
  * comment:
  */
 
-public class SelectRunnerTests extends ActiveRecordApplicationTests {
+public class SelectRunnerTest extends ActiveRecordApplicationTest {
 
     @Test
     public void selectAllTest() {

@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ActiveRecordApplication.class)
-public class ActiveRecordApplicationTests {
+public class ActiveRecordApplicationTest {
 
     @Resource
     private DataSource dataSource;
