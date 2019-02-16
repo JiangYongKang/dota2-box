@@ -1,6 +1,8 @@
 package com.jiangyongkang.active.record.example.tests;
 
+import com.jiangyongkang.active.record.core.ActiveRecord;
 import com.jiangyongkang.active.record.example.tests.model.User;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,18 +19,21 @@ public class DeleteRunnerTests extends ActiveRecordExampleApplicationTests {
 
     @Test
     public void deleteTest() {
-        User user = User.record.last();
-        user.delete();
+        User user = ActiveRecord.first(User.class);
+        boolean isDeleted = user.delete();
+        Assert.assertTrue(isDeleted);
     }
 
     @Test
     public void deleteByIdTest() {
-        User.record.deleteById(1);
+        boolean isDeleted = ActiveRecord.deleteById(User.class, 1);
+        Assert.assertTrue(isDeleted);
     }
 
     @Test
     public void deleteBySQLTest() {
-        User.record.deleteBySQL("name = 'nick'");
+        boolean isDeleted = ActiveRecord.deleteBySQL(User.class, "name = ?", "nick");
+        Assert.assertTrue(isDeleted);
     }
 
 

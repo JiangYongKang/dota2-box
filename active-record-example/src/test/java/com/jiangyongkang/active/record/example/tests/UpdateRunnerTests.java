@@ -1,12 +1,11 @@
 package com.jiangyongkang.active.record.example.tests;
 
+import com.jiangyongkang.active.record.core.ActiveRecord;
 import com.jiangyongkang.active.record.example.tests.model.User;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * author: vincent
@@ -20,16 +19,10 @@ public class UpdateRunnerTests extends ActiveRecordExampleApplicationTests {
 
     @Test
     public void updateTest() {
-        User user = User.record.first();
+        User user = ActiveRecord.first(User.class);
         user.setName("vincent");
-        user.update();
-    }
-
-    @Test
-    public void updateAttributesTest() {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("name", "sa");
-        User.record.update(attributes);
+        boolean isUpdated = user.update();
+        Assert.assertTrue(isUpdated);
     }
 
 }

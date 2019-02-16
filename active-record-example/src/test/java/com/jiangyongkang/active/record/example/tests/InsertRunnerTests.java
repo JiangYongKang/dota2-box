@@ -1,6 +1,7 @@
 package com.jiangyongkang.active.record.example.tests;
 
 import com.jiangyongkang.active.record.example.tests.model.User;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,8 @@ public class InsertRunnerTests extends ActiveRecordExampleApplicationTests {
     public void saveTest() {
         User user = new User();
         user.setName("vincent");
-        user.save();
+        boolean isSaved = user.save();
+        Assert.assertTrue(isSaved);
     }
 
 }

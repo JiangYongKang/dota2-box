@@ -1,6 +1,6 @@
 package com.jiangyongkang.active.record.example.tests.model;
 
-import com.jiangyongkang.active.record.core.ActiveRecord;
+import com.jiangyongkang.active.record.core.ActiveModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,8 +12,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserProfile extends ActiveRecord<UserProfile> {
+public class UserProfile extends ActiveModel {
 
-    public static UserProfile record = new UserProfile().record();
 
 }

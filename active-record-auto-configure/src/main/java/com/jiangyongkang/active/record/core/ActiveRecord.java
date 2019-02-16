@@ -1,133 +1,246 @@
 package com.jiangyongkang.active.record.core;
 
+import com.jiangyongkang.active.record.core.builder.SelectBuilder;
 import com.jiangyongkang.active.record.toolkit.BeanUtils;
+import com.jiangyongkang.active.record.toolkit.SpringContextUtil;
+import com.jiangyongkang.active.record.toolkit.StringUtils;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@SuppressWarnings("unchecked")
-public class ActiveRecord<E> extends ActiveModel<E> {
+public class ActiveRecord {
 
-    private Class<E> clazz;
+    private static final JdbcTemplate template = SpringContextUtil.findBean(JdbcTemplate.class);
 
-    public ActiveRecord() {
-        this.clazz = (Class<E>) this.getClass();
+    /**
+     * 查询第一条插入的数据
+     *
+     * @param modelClass
+     * @param <E>
+     * @return
+     */
+    public static <E> E first(Class<E> modelClass) {
+        String condition = "select * from " + tableName(modelClass) + " order by id asc limit 1";
+        return template.queryForObject(condition, new BeanPropertyRowMapper<>(modelClass));
     }
 
-    protected E record() {
-        return (E) this;
+    /**
+     * 查询最后一条插入的数据
+     *
+     * @param modelClass
+     * @param <E>
+     * @return
+     */
+    public static <E> E last(Class<E> modelClass) {
+        String condition = "select * from " + tableName(modelClass) + " order by id desc limit 1";
+        return template.queryForObject(condition, new BeanPropertyRowMapper<>(modelClass)
+        );
     }
 
-    @Override
-    public E first() {
-        Map<String, Object> result = selectMapper.first(clazz);
-        return BeanUtils.mapToBean(result, clazz);
+    /**
+     * 通过主键查询
+     *
+     * @param modelClass
+     * @param id
+     * @param <E>
+     * @return
+     */
+    public static <E> E findById(Class<E> modelClass, Serializable id) {
+        return findBySQL(modelClass, "id = ?", id);
     }
 
-    @Override
-    public E last() {
-        Map<String, Object> result = selectMapper.last(clazz);
-        return BeanUtils.mapToBean(result, clazz);
+    /**
+     * 通过 SQL 语句进行查询
+     *
+     * @param modelClass
+     * @param condition
+     * @param args
+     * @param <E>
+     * @return
+     */
+    public static <E> E findBySQL(Class<E> modelClass, String condition, Object... args) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(" select * from ");
+        builder.append(tableName(modelClass));
+        if (StringUtils.isNotEmpty(condition)) {
+            builder.append(" where ");
+            builder.append(condition);
+        }
+        return template.queryForObject(builder.toString(), args, new BeanPropertyRowMapper<>(modelClass));
     }
 
-    @Override
-    public E findById(Serializable id) {
-        Map<String, Object> result = selectMapper.findById(id, clazz);
-        return BeanUtils.mapToBean(result, clazz);
+    public static <E> SelectBuilder<E> selectBuilder(Class<E> modelClass) {
+        return new SelectBuilder<>(modelClass);
     }
 
-    @Override
-    public E findBySQL(String condition) {
-        Map<String, Object> result = selectMapper.findBySQL(condition, clazz);
-        return BeanUtils.mapToBean(result, clazz);
+    /**
+     * 查询全部
+     *
+     * @param moduleClass
+     * @param <E>
+     * @return
+     */
+    public static <E> List<E> selectAll(Class<E> moduleClass) {
+        return where(moduleClass, null);
     }
 
-    @Override
-    public List<E> all() {
-        return where(null);
+    /**
+     * 按条件查询
+     *
+     * @param modelClass
+     * @param condition
+     * @param args
+     * @param <E>
+     * @return
+     */
+    public static <E> List<E> where(Class<E> modelClass, String condition, Object... args) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("select * from ");
+        builder.append(tableName(modelClass));
+        if (StringUtils.isNotEmpty(condition)) {
+            builder.append(" where ");
+            builder.append(condition);
+        }
+        return template.query(builder.toString(), args, new BeanPropertyRowMapper<>(modelClass));
     }
 
-    @Override
-    public List<E> where(String condition) {
-        List<Map<String, Object>> results = selectMapper.where(condition, clazz);
-        return BeanUtils.mapToBean(results, clazz);
+    /**
+     * 表行数统计
+     *
+     * @param modelClass
+     * @param <E>
+     * @return
+     */
+    public static <E> int count(Class<E> modelClass) {
+        return countBySQL(modelClass, null);
     }
 
-    @Override
-    public int count() {
-        return selectMapper.count(clazz);
+    /**
+     * 按条件统计
+     *
+     * @param modelClass
+     * @param condition
+     * @param values
+     * @param <E>
+     * @return
+     */
+    public static <E> int countBySQL(Class<E> modelClass, String condition, Object... values) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("select count(*) from ");
+        builder.append(tableName(modelClass));
+        if (StringUtils.isNotEmpty(condition)) {
+            builder.append(" where ");
+            builder.append(condition);
+        }
+        Integer count = template.queryForObject(builder.toString(), values, Integer.class);
+        Assert.notNull(count, "见鬼了？");
+        return count;
     }
 
-    @Override
-    public int countBySQL(String condition) {
-        return selectMapper.countBySQL(condition, clazz);
+    /**
+     * 查找或创建
+     *
+     * @param model
+     * @param <E>
+     * @return
+     */
+    public static <E> boolean findOrCreate(E model) {
+        return findOrCreate(model.getClass(), BeanUtils.beanToMap(model)) != null;
     }
 
-    @Override
-    public boolean any() {
-        return false;
+    /**
+     * 查找或创建
+     *
+     * @param modelClass
+     * @param attributeMap
+     * @param <E>
+     * @return
+     */
+    public static <E> E findOrCreate(Class<E> modelClass, Map<String, Object> attributeMap) {
+        String condition = updateCondition(tableName(modelClass), attributeMap.keySet());
+        E model = findBySQL(modelClass, condition, attributeMap.values());
+        if (model == null)
+            create(modelClass, attributeMap);
+        return BeanUtils.mapToBean(attributeMap, modelClass);
     }
 
-    @Override
-    public boolean delete() {
-        return false;
+    /**
+     * 保存对象
+     * <p>
+     * Map<String, Object> attributeMap = new HashMap<>();
+     * attributeMap.put("name", "vincent");
+     * attributeMap.put("email", "vincent@mail.com");
+     * attributeMap.put("status", 1);
+     * attributeMap.put("createdAt", new Date());
+     * ActiveModel.create(User.class, attributeMap);
+     *
+     * @param modelClass   目标对象
+     * @param attributeMap 对象属性
+     * @param <E>          泛型对象
+     * @return 保存结果
+     */
+    public static <E> boolean create(Class<E> modelClass, Map<String, Object> attributeMap) {
+        String createCondition = createCondition(tableName(modelClass), attributeMap.keySet());
+        return template.update(createCondition, attributeMap.values()) == 1;
     }
 
-    @Override
-    public boolean deleteById(Serializable id) {
-        return deleteMapper.deleteById(id, clazz) == 1;
+    /**
+     * 按主键删除
+     *
+     * @param modelClass 目标对象
+     * @param id         主键值
+     * @param <E>        对象泛型
+     * @return 删除结果
+     */
+    public static <E> boolean deleteById(Class<E> modelClass, Serializable id) {
+        return deleteBySQL(modelClass, "id = ?", id);
     }
 
-    @Override
-    public boolean deleteBySQL(String condition) {
-        deleteMapper.deleteBySQL(condition, clazz);
-        return true;
+    /**
+     * 按条件删除
+     *
+     * @param modelClass 目标对象
+     * @param condition  删除条件
+     * @param args       条件参数
+     * @param <E>        对象泛型
+     * @return 删除结果
+     */
+    public static <E> boolean deleteBySQL(Class<E> modelClass, String condition, Object... args) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("delete from ");
+        builder.append(tableName(modelClass));
+        builder.append(" where ");
+        if (StringUtils.isNotEmpty(condition)) {
+            builder.append(condition);
+        } else {
+            builder.append("true");
+        }
+        return template.update(builder.toString(), args) > 0;
     }
 
-    @Override
-    public boolean save() {
-        return insertMapper.save(this, clazz);
+    /**
+     * 获取表名
+     *
+     * @param moduleClass
+     * @return
+     */
+    public static String tableName(Class<?> moduleClass) {
+        return moduleClass.getSimpleName().toUpperCase();
     }
 
-    @Override
-    public boolean createWith(Map<String, Object> attributes) {
-        return false;
+    private static String createCondition(String tableName, Set<String> attributes) {
+        return "insert into " + tableName + " (" + String.join(", ", attributes) + ") values (" +
+                attributes.stream().map(attribute -> "?").collect(Collectors.joining(", ")) + ")";
     }
 
-    @Override
-    public boolean update() {
-        return update(BeanUtils.beanToMap(this));
-    }
-
-    @Override
-    public boolean update(Map<String, Object> attributes) {
-        return updateMapper.update(attributes, clazz);
-    }
-
-    @Override
-    public String tableName() {
-        return null;
-    }
-
-    @Override
-    public boolean exists() {
-        return false;
-    }
-
-    @Override
-    public boolean tableExists() {
-        return false;
-    }
-
-    @Override
-    public Set<String> columns() {
-        return null;
-    }
-
-    @Override
-    public E findOrCreateBy() {
-        return null;
+    private static String updateCondition(String tableName, Set<String> attributes) {
+        return "update " + tableName + " " + attributes.stream().map(attribute -> attribute + " = " + " #{" + attribute + "} ")
+                .collect(Collectors.joining("and"));
     }
 }

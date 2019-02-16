@@ -1,6 +1,6 @@
 package com.jiangyongkang.active.record.example.tests.model;
 
-import com.jiangyongkang.active.record.core.ActiveRecord;
+import com.jiangyongkang.active.record.core.ActiveModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,9 +14,7 @@ import java.sql.Timestamp;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class User extends ActiveRecord<User> {
-
-    public static User record = new User().record();
+public class User extends ActiveModel {
 
     private Integer id;
 
@@ -29,5 +27,4 @@ public class User extends ActiveRecord<User> {
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
-
 }
