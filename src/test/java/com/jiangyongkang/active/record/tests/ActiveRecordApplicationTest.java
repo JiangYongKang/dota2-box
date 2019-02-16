@@ -1,12 +1,12 @@
-package com.jiangyongkang.active.record.example.tests;
+package com.jiangyongkang.active.record.tests;
 
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import com.jiangyongkang.active.record.tests.application.ActiveRecordApplication;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -17,24 +17,20 @@ import javax.sql.DataSource;
  * comment:
  */
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
-public class ActiveRecordExampleApplicationTests {
+@SpringBootTest(classes = ActiveRecordApplication.class)
+public class ActiveRecordApplicationTests {
 
     @Resource
     private DataSource dataSource;
 
     @Resource
-    private SqlSessionFactory sqlSessionFactory;
-
-    @Resource
-    private SqlSessionTemplate sqlSessionTemplate;
+    private JdbcTemplate template;
 
     @Test
     public void contextLoad() {
         Assert.assertNotNull(dataSource);
-        Assert.assertNotNull(sqlSessionFactory);
-        Assert.assertNotNull(sqlSessionTemplate);
+        Assert.assertNotNull(template);
     }
 
 }

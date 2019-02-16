@@ -1,4 +1,4 @@
-package com.jiangyongkang.active.record.example.tests.model;
+package com.jiangyongkang.active.record.tests.model;
 
 import com.jiangyongkang.active.record.core.ActiveModel;
 import lombok.Data;

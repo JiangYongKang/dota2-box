@@ -1,7 +1,7 @@
-package com.jiangyongkang.active.record.example.tests;
+package com.jiangyongkang.active.record.tests;
 
 import com.jiangyongkang.active.record.core.ActiveRecord;
-import com.jiangyongkang.active.record.example.tests.model.User;
+import com.jiangyongkang.active.record.tests.model.User;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * comment:
  */
 
-public class SelectRunnerTests extends ActiveRecordExampleApplicationTests {
+public class SelectRunnerTests extends ActiveRecordApplicationTests {
 
     @Test
     public void selectAllTest() {

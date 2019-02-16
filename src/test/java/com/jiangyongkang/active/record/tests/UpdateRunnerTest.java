@@ -1,7 +1,7 @@
-package com.jiangyongkang.active.record.example.tests;
+package com.jiangyongkang.active.record.tests;
 
 import com.jiangyongkang.active.record.core.ActiveRecord;
-import com.jiangyongkang.active.record.example.tests.model.User;
+import com.jiangyongkang.active.record.tests.model.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Rollback
 @Transactional
-public class UpdateRunnerTests extends ActiveRecordExampleApplicationTests {
+public class UpdateRunnerTests extends ActiveRecordApplicationTests {
 
     @Test
     public void updateTest() {
