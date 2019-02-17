@@ -21,8 +21,8 @@ public class UpdateRunnerTest extends ActiveRecordApplicationTest {
     public void updateTest() {
         User user = ActiveRecord.first(User.class);
         user.setName("vincent");
-        boolean isUpdated = user.update();
-        Assert.assertTrue(isUpdated);
+        boolean updated = user.update();
+        Assert.assertTrue(updated);
     }
 
 }

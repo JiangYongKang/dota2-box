@@ -3,12 +3,12 @@ package com.jiangyongkang.active.record.toolkit;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 
-public class SpringContextUtil {
+public class SpringContextUtils {
 
     private static ApplicationContext applicationContext;
 
     public static void setApplicationContext(ApplicationContext applicationContext) {
-        SpringContextUtil.applicationContext = applicationContext;
+        SpringContextUtils.applicationContext = applicationContext;
     }
 
     public static ApplicationContext applicationContext() {

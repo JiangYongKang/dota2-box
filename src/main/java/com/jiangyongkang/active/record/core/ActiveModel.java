@@ -1,17 +1,13 @@
 package com.jiangyongkang.active.record.core;
 
+import com.jiangyongkang.active.record.core.builder.DeleteBuilder;
+import com.jiangyongkang.active.record.core.builder.UpdateBuilder;
 import com.jiangyongkang.active.record.toolkit.BeanUtils;
-import com.jiangyongkang.active.record.toolkit.SpringContextUtil;
-import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ActiveModel {
-
-    private static final JdbcTemplate template = SpringContextUtil.findBean(JdbcTemplate.class);
 
     private Class<?> modelClass;
 
@@ -26,8 +22,7 @@ public class ActiveModel {
      */
     public boolean save() {
         Map<String, Object> attributeMap = BeanUtils.beanToMap(this);
-        String saveCondition = saveCondition(tableName(modelClass), attributeMap.keySet());
-        return template.update(saveCondition, attributeMap.values().toArray()) == 1;
+        return ActiveRecord.create(modelClass, attributeMap);
     }
 
     /**
@@ -36,46 +31,24 @@ public class ActiveModel {
      * @return 更新结果
      */
     public boolean update() {
-        Map<String, Object> attributeMap = BeanUtils.beanToMap(this);
-        Object id = attributeMap.remove("id");
-        String updateCondition = updateCondition(tableName(modelClass), attributeMap.keySet());
-        Object[] attributes = attributeMap.values().toArray();
-        Object[] args = new Object[attributes.length + 1];
-        System.arraycopy(attributes, 0, args, 0, attributes.length);
-        args[attributes.length] = id;
-        return template.update(updateCondition, args) == 1;
+        Map<String, Object> attributes = BeanUtils.beanToMap(this);
+        Object id = attributes.remove("id");
+        String condition = attributes.keySet().stream().map(attribute -> attribute + " = ?")
+                .collect(Collectors.joining(", "));
+        Object[] args = attributes.values().toArray();
+        return new UpdateBuilder<>(modelClass).set(condition, args).where("id = ?", id).doIt() == 1;
     }
 
     /**
      * 删除当前对象
+     * TODO: 主键值的获取
      *
      * @return 删除结果
      */
     public boolean delete() {
-        Map<String, Object> attributeMap = BeanUtils.beanToMap(this);
-        String deleteCondition = "delete from " + tableName(modelClass) + " where id = ?";
-        return template.update(deleteCondition, attributeMap.get("id")) == 1;
-    }
-
-
-    /**
-     * 获取表名
-     *
-     * @param moduleClass
-     * @return
-     */
-    public static String tableName(Class<?> moduleClass) {
-        return moduleClass.getSimpleName().toLowerCase();
-    }
-
-    private static String saveCondition(String tableName, Set<String> attributes) {
-        return "insert into " + tableName + " (" + String.join(", ", attributes) + ") values (" +
-                attributes.stream().map(attribute -> "?").collect(Collectors.joining(", ")) + ")";
-    }
-
-    private static String updateCondition(String tableName, Set<String> attributes) {
-        return "update " + tableName + " set " + attributes.stream().map(attribute -> attribute + " = ?")
-                .collect(Collectors.joining(", ")) + " where id = ?";
+        Map<String, Object> attributes = BeanUtils.beanToMap(this);
+        Object id = attributes.get("id");
+        return new DeleteBuilder<>(modelClass).where("id = ?", id).doIt() == 1;
     }
 
 }

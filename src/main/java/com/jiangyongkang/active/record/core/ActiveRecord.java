@@ -1,22 +1,16 @@
 package com.jiangyongkang.active.record.core;
 
+import com.jiangyongkang.active.record.core.builder.DeleteBuilder;
+import com.jiangyongkang.active.record.core.builder.InsertBuilder;
 import com.jiangyongkang.active.record.core.builder.SelectBuilder;
 import com.jiangyongkang.active.record.toolkit.BeanUtils;
-import com.jiangyongkang.active.record.toolkit.SpringContextUtil;
-import com.jiangyongkang.active.record.toolkit.StringUtils;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ActiveRecord {
-
-    private static final JdbcTemplate template = SpringContextUtil.findBean(JdbcTemplate.class);
 
     /**
      * 查询第一条插入的数据
@@ -26,8 +20,7 @@ public class ActiveRecord {
      * @return
      */
     public static <E> E first(Class<E> modelClass) {
-        String condition = "select * from " + tableName(modelClass) + " order by id asc limit 1";
-        return template.queryForObject(condition, new BeanPropertyRowMapper<>(modelClass));
+        return new SelectBuilder<>(modelClass).orderBy("id asc").limit(1).fetchOne();
     }
 
     /**
@@ -38,9 +31,7 @@ public class ActiveRecord {
      * @return
      */
     public static <E> E last(Class<E> modelClass) {
-        String condition = "select * from " + tableName(modelClass) + " order by id desc limit 1";
-        return template.queryForObject(condition, new BeanPropertyRowMapper<>(modelClass)
-        );
+        return new SelectBuilder<>(modelClass).orderBy("id desc").limit(1).fetchOne();
     }
 
     /**
@@ -52,7 +43,7 @@ public class ActiveRecord {
      * @return
      */
     public static <E> E findById(Class<E> modelClass, Serializable id) {
-        return findBySQL(modelClass, "id = ?", id);
+        return new SelectBuilder<>(modelClass).where("id = ?", id).fetchOne();
     }
 
     /**
@@ -65,29 +56,18 @@ public class ActiveRecord {
      * @return
      */
     public static <E> E findBySQL(Class<E> modelClass, String condition, Object... args) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(" select * from ");
-        builder.append(tableName(modelClass));
-        if (StringUtils.isNotEmpty(condition)) {
-            builder.append(" where ");
-            builder.append(condition);
-        }
-        return template.queryForObject(builder.toString(), args, new BeanPropertyRowMapper<>(modelClass));
-    }
-
-    public static <E> SelectBuilder<E> selectBuilder(Class<E> modelClass) {
-        return new SelectBuilder<>(modelClass);
+        return new SelectBuilder<>(modelClass).where(condition, args).fetchOne();
     }
 
     /**
      * 查询全部
      *
-     * @param moduleClass
+     * @param modelClass
      * @param <E>
      * @return
      */
-    public static <E> List<E> selectAll(Class<E> moduleClass) {
-        return where(moduleClass, null);
+    public static <E> List<E> selectAll(Class<E> modelClass) {
+        return where(modelClass, null);
     }
 
     /**
@@ -100,14 +80,7 @@ public class ActiveRecord {
      * @return
      */
     public static <E> List<E> where(Class<E> modelClass, String condition, Object... args) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("select * from ");
-        builder.append(tableName(modelClass));
-        if (StringUtils.isNotEmpty(condition)) {
-            builder.append(" where ");
-            builder.append(condition);
-        }
-        return template.query(builder.toString(), args, new BeanPropertyRowMapper<>(modelClass));
+        return new SelectBuilder<>(modelClass).where(condition, args).fetchMany();
     }
 
     /**
@@ -126,48 +99,38 @@ public class ActiveRecord {
      *
      * @param modelClass
      * @param condition
-     * @param values
+     * @param args
      * @param <E>
      * @return
      */
-    public static <E> int countBySQL(Class<E> modelClass, String condition, Object... values) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("select count(*) from ");
-        builder.append(tableName(modelClass));
-        if (StringUtils.isNotEmpty(condition)) {
-            builder.append(" where ");
-            builder.append(condition);
-        }
-        Integer count = template.queryForObject(builder.toString(), values, Integer.class);
-        Assert.notNull(count, "见鬼了？");
-        return count;
+    public static <E> Integer countBySQL(Class<E> modelClass, String condition, Object... args) {
+        return new SelectBuilder<>(modelClass).select("count(*)").where(condition, args).fetchToInt();
     }
 
     /**
-     * 查找或创建
+     * TODO: find or create by return model
      *
      * @param model
      * @param <E>
-     * @return
      */
-    public static <E> boolean findOrCreate(E model) {
-        return findOrCreate(model.getClass(), BeanUtils.beanToMap(model)) != null;
+    @SuppressWarnings("unchecked")
+    public static <E> void findOrCreateBy(E model) {
+        Class<E> modelClass = (Class<E>) model.getClass();
+        findOrCreateBy(modelClass, BeanUtils.beanToMap(model));
     }
 
     /**
-     * 查找或创建
+     * TODO: find or create by return model
      *
      * @param modelClass
-     * @param attributeMap
+     * @param attributes
      * @param <E>
-     * @return
      */
-    public static <E> E findOrCreate(Class<E> modelClass, Map<String, Object> attributeMap) {
-        String condition = updateCondition(tableName(modelClass), attributeMap.keySet());
-        E model = findBySQL(modelClass, condition, attributeMap.values());
+    public static <E> void findOrCreateBy(Class<E> modelClass, Map<String, Object> attributes) {
+        String condition = attributes.keySet().stream().map(column -> column + " = ?").collect(Collectors.joining(", "));
+        E model = new SelectBuilder<>(modelClass).where(condition, attributes.values()).fetchOne();
         if (model == null)
-            create(modelClass, attributeMap);
-        return BeanUtils.mapToBean(attributeMap, modelClass);
+            create(modelClass, attributes);
     }
 
     /**
@@ -186,8 +149,7 @@ public class ActiveRecord {
      * @return 保存结果
      */
     public static <E> boolean create(Class<E> modelClass, Map<String, Object> attributeMap) {
-        String createCondition = createCondition(tableName(modelClass), attributeMap.keySet());
-        return template.update(createCondition, attributeMap.values()) == 1;
+        return new InsertBuilder<>(modelClass).with(attributeMap).saveIt() == 1;
     }
 
     /**
@@ -199,7 +161,7 @@ public class ActiveRecord {
      * @return 删除结果
      */
     public static <E> boolean deleteById(Class<E> modelClass, Serializable id) {
-        return deleteBySQL(modelClass, "id = ?", id);
+        return new DeleteBuilder<>(modelClass).where("id = ?", id).doIt() == 1;
     }
 
     /**
@@ -212,35 +174,6 @@ public class ActiveRecord {
      * @return 删除结果
      */
     public static <E> boolean deleteBySQL(Class<E> modelClass, String condition, Object... args) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("delete from ");
-        builder.append(tableName(modelClass));
-        builder.append(" where ");
-        if (StringUtils.isNotEmpty(condition)) {
-            builder.append(condition);
-        } else {
-            builder.append("true");
-        }
-        return template.update(builder.toString(), args) > 0;
-    }
-
-    /**
-     * 获取表名
-     *
-     * @param moduleClass
-     * @return
-     */
-    public static String tableName(Class<?> moduleClass) {
-        return moduleClass.getSimpleName().toUpperCase();
-    }
-
-    private static String createCondition(String tableName, Set<String> attributes) {
-        return "insert into " + tableName + " (" + String.join(", ", attributes) + ") values (" +
-                attributes.stream().map(attribute -> "?").collect(Collectors.joining(", ")) + ")";
-    }
-
-    private static String updateCondition(String tableName, Set<String> attributes) {
-        return "update " + tableName + " " + attributes.stream().map(attribute -> attribute + " = " + " #{" + attribute + "} ")
-                .collect(Collectors.joining("and"));
+        return new DeleteBuilder<>(modelClass).where(condition, args).doIt() > 0;
     }
 }

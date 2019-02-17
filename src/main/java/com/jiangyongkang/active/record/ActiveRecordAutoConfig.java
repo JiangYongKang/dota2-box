@@ -1,6 +1,6 @@
 package com.jiangyongkang.active.record;
 
-import com.jiangyongkang.active.record.toolkit.SpringContextUtil;
+import com.jiangyongkang.active.record.toolkit.SpringContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -44,6 +44,6 @@ public class ActiveRecordAutoConfig implements InitializingBean, ApplicationCont
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        SpringContextUtil.setApplicationContext(applicationContext);
+        SpringContextUtils.setApplicationContext(applicationContext);
     }
 }

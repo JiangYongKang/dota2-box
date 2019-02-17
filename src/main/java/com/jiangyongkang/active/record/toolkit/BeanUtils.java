@@ -73,32 +73,6 @@ public class BeanUtils {
     }
 
     /**
-     * 下划线转驼峰
-     *
-     * @param name
-     * @param lower
-     * @return
-     */
-    public static String camelcase(String name, boolean lower) {
-        String newName = Arrays.stream(name.split("_"))
-                .map(s -> s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase())
-                .collect(Collectors.joining());
-        return lower ? newName.substring(0, 1).toLowerCase() + newName.substring(1) : newName;
-    }
-
-    /**
-     * 驼峰转下划线
-     *
-     * @param name
-     * @param lower
-     * @return
-     */
-    public static String underscore(String name, boolean lower) {
-        String newName = name.replaceAll("[A-Z]", "_$0").substring(1);
-        return lower ? newName.toLowerCase() : newName.toUpperCase();
-    }
-
-    /**
      * 数据库驼峰属性转 Set 方法名
      *
      * @param attributeName 数据库属性名
