@@ -21,7 +21,6 @@ public class BeanUtils {
 
     /**
      * 将包含了属性方法的 Map 对象转换成 JavaBean
-     *
      * @param attributes 属性 Map 集合
      * @param clazz      JavaBean 类型信息
      * @param <T>        JavaBean 泛型
@@ -45,7 +44,6 @@ public class BeanUtils {
 
     /**
      * 将 JavaBean 转换成 Map 对象
-     *
      * @param bean JavaBean
      * @param <T>  JavaBean 泛型
      * @return 包含 JavaBean 属性的 Map 集合
@@ -74,7 +72,6 @@ public class BeanUtils {
 
     /**
      * 数据库驼峰属性转 Set 方法名
-     *
      * @param attributeName 数据库属性名
      * @return Set 方法名
      */
@@ -86,7 +83,6 @@ public class BeanUtils {
 
     /**
      * Get 方法名转数据库属性
-     *
      * @param methodName Get 方法名
      * @return 数据库属性名
      */

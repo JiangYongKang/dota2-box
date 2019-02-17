@@ -17,7 +17,6 @@ public class ActiveModel {
 
     /**
      * 保存当前对象
-     *
      * @return 保存结果
      */
     public boolean save() {
@@ -27,7 +26,6 @@ public class ActiveModel {
 
     /**
      * 更新当前对象
-     *
      * @return 更新结果
      */
     public boolean update() {
@@ -42,7 +40,6 @@ public class ActiveModel {
     /**
      * 删除当前对象
      * TODO: 主键值的获取
-     *
      * @return 删除结果
      */
     public boolean delete() {

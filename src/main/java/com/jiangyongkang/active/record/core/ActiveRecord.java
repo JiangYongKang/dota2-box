@@ -14,7 +14,6 @@ public class ActiveRecord {
 
     /**
      * 查询第一条插入的数据
-     *
      * @param modelClass
      * @param <E>
      * @return
@@ -25,7 +24,6 @@ public class ActiveRecord {
 
     /**
      * 查询最后一条插入的数据
-     *
      * @param modelClass
      * @param <E>
      * @return
@@ -36,7 +34,6 @@ public class ActiveRecord {
 
     /**
      * 通过主键查询
-     *
      * @param modelClass
      * @param id
      * @param <E>
@@ -48,7 +45,6 @@ public class ActiveRecord {
 
     /**
      * 通过 SQL 语句进行查询
-     *
      * @param modelClass
      * @param condition
      * @param args
@@ -61,7 +57,6 @@ public class ActiveRecord {
 
     /**
      * 查询全部
-     *
      * @param modelClass
      * @param <E>
      * @return
@@ -72,7 +67,6 @@ public class ActiveRecord {
 
     /**
      * 按条件查询
-     *
      * @param modelClass
      * @param condition
      * @param args
@@ -85,7 +79,6 @@ public class ActiveRecord {
 
     /**
      * 表行数统计
-     *
      * @param modelClass
      * @param <E>
      * @return
@@ -96,7 +89,6 @@ public class ActiveRecord {
 
     /**
      * 按条件统计
-     *
      * @param modelClass
      * @param condition
      * @param args
@@ -109,7 +101,6 @@ public class ActiveRecord {
 
     /**
      * TODO: find or create by return model
-     *
      * @param model
      * @param <E>
      */
@@ -121,7 +112,6 @@ public class ActiveRecord {
 
     /**
      * TODO: find or create by return model
-     *
      * @param modelClass
      * @param attributes
      * @param <E>
@@ -142,7 +132,6 @@ public class ActiveRecord {
      * attributeMap.put("status", 1);
      * attributeMap.put("createdAt", new Date());
      * ActiveModel.create(User.class, attributeMap);
-     *
      * @param modelClass   目标对象
      * @param attributeMap 对象属性
      * @param <E>          泛型对象
@@ -154,7 +143,6 @@ public class ActiveRecord {
 
     /**
      * 按主键删除
-     *
      * @param modelClass 目标对象
      * @param id         主键值
      * @param <E>        对象泛型
@@ -166,7 +154,6 @@ public class ActiveRecord {
 
     /**
      * 按条件删除
-     *
      * @param modelClass 目标对象
      * @param condition  删除条件
      * @param args       条件参数

@@ -19,13 +19,8 @@ public class StringUtils {
         return !isEmpty(s);
     }
 
-    public static String appendQuotes(Object object) {
-        return "'" + object + "'";
-    }
-
     /**
      * 下划线转驼峰
-     *
      * @param name
      * @param lower
      * @return
@@ -39,7 +34,6 @@ public class StringUtils {
 
     /**
      * 驼峰转下划线
-     *
      * @param name
      * @param lower
      * @return

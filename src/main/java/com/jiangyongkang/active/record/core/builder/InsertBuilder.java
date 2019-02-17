@@ -1,7 +1,7 @@
 package com.jiangyongkang.active.record.core.builder;
 
 import com.jiangyongkang.active.record.toolkit.BeanUtils;
-import com.jiangyongkang.active.record.toolkit.SQLUtils;
+import com.jiangyongkang.active.record.core.support.ModelSupport;
 import com.jiangyongkang.active.record.toolkit.StringUtils;
 
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class InsertBuilder<E> extends AbstractBuilder<E> {
 
     public InsertBuilder(Class<E> modelClass) {
-        builder.append("insert into ").append(SQLUtils.tableName(modelClass)).append(" ");
+        builder.append("insert into ").append(ModelSupport.tableName(modelClass)).append(" ");
     }
 
     public InsertBuilder<E> auto(E model) {

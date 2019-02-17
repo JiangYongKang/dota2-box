@@ -1,6 +1,6 @@
 package com.jiangyongkang.active.record.core.builder;
 
-import com.jiangyongkang.active.record.toolkit.SQLUtils;
+import com.jiangyongkang.active.record.core.support.ModelSupport;
 
 import java.util.Arrays;
 
@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class UpdateBuilder<E> extends AbstractBuilder<E> {
 
     public UpdateBuilder(Class<E> modelClass) {
-        builder.append("update ").append(SQLUtils.tableName(modelClass)).append(" set ");
+        builder.append("update ").append(ModelSupport.tableName(modelClass)).append(" set ");
     }
 
     public UpdateBuilder<E> set(String condition, Object... args) {

@@ -1,5 +1,6 @@
 package com.jiangyongkang.active.record.tests;
 
+import com.jiangyongkang.active.record.ActiveRecordProperties;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,10 +28,14 @@ public class ActiveRecordApplicationTest {
     @Resource
     private JdbcTemplate template;
 
+    @Resource
+    private ActiveRecordProperties properties;
+
     @Test
     public void contextLoad() {
         Assert.assertNotNull(dataSource);
         Assert.assertNotNull(template);
+        Assert.assertNotNull(properties);
     }
 
 }

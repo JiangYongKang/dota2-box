@@ -1,6 +1,6 @@
 package com.jiangyongkang.active.record.core.builder;
 
-import com.jiangyongkang.active.record.toolkit.SQLUtils;
+import com.jiangyongkang.active.record.core.support.ModelSupport;
 import com.jiangyongkang.active.record.toolkit.StringUtils;
 
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class DeleteBuilder<E> extends AbstractBuilder<E> {
 
     public DeleteBuilder(Class<E> modelClass) {
-        builder.append("delete from ").append(SQLUtils.tableName(modelClass)).append(" where true");
+        builder.append("delete from ").append(ModelSupport.tableName(modelClass)).append(" where true");
     }
 
     public DeleteBuilder<E> where(String condition, Object... args) {

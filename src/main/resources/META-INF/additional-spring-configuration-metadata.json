@@ -2,32 +2,38 @@
   "properties": [
     {
       "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
-      "name": "active-record.banner",
+      "name": "spring.active.record.banner",
       "description": "是否开启 Banner 图.",
       "type": "java.lang.Boolean",
       "defaultValue": true
     },
     {
       "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
-      "name": "active-record.table-name-prefix",
+      "name": "spring.active.record.table-name-prefix",
       "description": "全局表名前缀.",
       "type": "java.lang.String"
     },
     {
       "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
-      "name": "active-record.table-name-suffix",
+      "name": "spring.active.record.table-name-suffix",
       "description": "全局表名后缀.",
       "type": "java.lang.String"
     },
     {
       "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
-      "name": "active-record.primary-key-prefix",
+      "name": "spring.active.record.primary-key",
+      "description": "全局主键字段.",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
+      "name": "spring.active.record.primary-key-prefix",
       "description": "全局主键名前缀.",
       "type": "java.lang.String"
     },
     {
       "sourceType": "com.jiangyongkang.active.record.ActiveRecordProperties",
-      "name": "active-record.primary-key-suffix",
+      "name": "spring.active.record.primary-key-suffix",
       "description": "全局主键名后缀.",
       "type": "java.lang.String"
     }

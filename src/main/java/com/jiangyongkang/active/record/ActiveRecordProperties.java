@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * comment:
  */
 
-@ConfigurationProperties(prefix = "active-record")
+@ConfigurationProperties(prefix = "spring.active.record")
 public class ActiveRecordProperties {
 
     /**
@@ -25,6 +25,11 @@ public class ActiveRecordProperties {
      * 全局表名后缀
      */
     private String tableNameSuffix;
+
+    /**
+     * 全局主键字段
+     */
+    private String primaryKey;
 
     /**
      * 全局主键名前缀
@@ -76,12 +81,21 @@ public class ActiveRecordProperties {
         this.tableNamePrefix = tableNamePrefix;
     }
 
+    public String getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
+    }
+
     @Override
     public String toString() {
         return "ActiveRecordProperties{" +
                 "banner=" + banner +
                 ", tableNamePrefix='" + tableNamePrefix + '\'' +
                 ", tableNameSuffix='" + tableNameSuffix + '\'' +
+                ", primaryKey='" + primaryKey + '\'' +
                 ", primaryKeyPrefix='" + primaryKeyPrefix + '\'' +
                 ", primaryKeySuffix='" + primaryKeySuffix + '\'' +
                 '}';

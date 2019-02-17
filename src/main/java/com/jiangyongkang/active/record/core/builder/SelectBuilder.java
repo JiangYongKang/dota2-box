@@ -1,6 +1,6 @@
 package com.jiangyongkang.active.record.core.builder;
 
-import com.jiangyongkang.active.record.toolkit.SQLUtils;
+import com.jiangyongkang.active.record.core.support.ModelSupport;
 import com.jiangyongkang.active.record.toolkit.StringUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
@@ -19,7 +19,7 @@ public class SelectBuilder<E> extends AbstractBuilder<E> {
 
     public SelectBuilder(Class<E> modelClass) {
         this.rowMapper = new BeanPropertyRowMapper<>(modelClass);
-        this.builder.append("select * from ").append(SQLUtils.tableName(modelClass)).append(" where true");
+        this.builder.append("select * from ").append(ModelSupport.tableName(modelClass)).append(" where true");
     }
 
     public SelectBuilder<E> select(String... columns) {
@@ -51,16 +51,15 @@ public class SelectBuilder<E> extends AbstractBuilder<E> {
 
     /**
      * 提取单条数据
-     *
      * @return
      */
     public E fetchOne() {
+        System.out.println(builder.toString());
         return template.queryForObject(builder.toString(), args.toArray(), rowMapper);
     }
 
     /**
      * 提取多条数据
-     *
      * @return
      */
     public List<E> fetchMany() {
@@ -69,7 +68,6 @@ public class SelectBuilder<E> extends AbstractBuilder<E> {
 
     /**
      * 提取整型结果
-     *
      * @return
      */
     public Integer fetchToInt() {
@@ -78,7 +76,6 @@ public class SelectBuilder<E> extends AbstractBuilder<E> {
 
     /**
      * 提取浮点型结果
-     *
      * @return
      */
     public Double fetchToDouble() {
