@@ -1,6 +1,8 @@
 package com.jiangyongkang.active.record.tests;
 
-import com.jiangyongkang.active.record.ActiveRecordProperties;
+import com.jiangyongkang.active.record.core.properties.ActiveRecordProperties;
+import com.jiangyongkang.active.record.core.properties.PrimaryKeyProperties;
+import com.jiangyongkang.active.record.core.properties.TableProperties;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,13 +31,21 @@ public class ActiveRecordApplicationTest {
     private JdbcTemplate template;
 
     @Resource
-    private ActiveRecordProperties properties;
+    private ActiveRecordProperties activeRecordProperties;
+
+    @Resource
+    private TableProperties tableProperties;
+
+    @Resource
+    private PrimaryKeyProperties primaryKeyProperties;
 
     @Test
     public void contextLoad() {
         Assert.assertNotNull(dataSource);
         Assert.assertNotNull(template);
-        Assert.assertNotNull(properties);
+        Assert.assertNotNull(activeRecordProperties);
+        Assert.assertNotNull(tableProperties);
+        Assert.assertNotNull(primaryKeyProperties);
     }
 
 }

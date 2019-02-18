@@ -1,7 +1,7 @@
 package com.jiangyongkang.active.record.core.support;
 
-import com.jiangyongkang.active.record.ActiveRecordProperties;
 import com.jiangyongkang.active.record.core.annotations.Table;
+import com.jiangyongkang.active.record.core.properties.ActiveRecordProperties;
 import com.jiangyongkang.active.record.toolkit.SpringContextUtils;
 import com.jiangyongkang.active.record.toolkit.StringUtils;
 
@@ -27,7 +27,7 @@ public class ModelSupport {
         if (table != null && StringUtils.isNotEmpty(table.prefix())) {
             builder.append(table.prefix());
         } else {
-            builder.append(properties.getTableNamePrefix());
+            builder.append(properties.tableName().prefix());
         }
 
         if (table != null && StringUtils.isNotEmpty(table.name())) {
@@ -40,7 +40,7 @@ public class ModelSupport {
         if (table != null && StringUtils.isNotEmpty(table.suffix())) {
             builder.append(table.suffix());
         } else {
-            builder.append(properties.getTableNameSuffix());
+            builder.append(properties.tableName().suffix());
         }
         return builder.toString();
     }

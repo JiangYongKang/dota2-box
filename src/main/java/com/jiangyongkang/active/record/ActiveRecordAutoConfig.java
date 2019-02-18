@@ -1,5 +1,8 @@
 package com.jiangyongkang.active.record;
 
+import com.jiangyongkang.active.record.core.properties.ActiveRecordProperties;
+import com.jiangyongkang.active.record.core.properties.PrimaryKeyProperties;
+import com.jiangyongkang.active.record.core.properties.TableProperties;
 import com.jiangyongkang.active.record.toolkit.SpringContextUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +22,7 @@ import javax.sql.DataSource;
 @Configuration
 @ConditionalOnSingleCandidate(DataSource.class)
 @AutoConfigureAfter({DataSourceAutoConfiguration.class})
-@EnableConfigurationProperties(ActiveRecordProperties.class)
+@EnableConfigurationProperties(value = {ActiveRecordProperties.class, TableProperties.class, PrimaryKeyProperties.class})
 public class ActiveRecordAutoConfig implements InitializingBean, ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(ActiveRecordAutoConfig.class);
